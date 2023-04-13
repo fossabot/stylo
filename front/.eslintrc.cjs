@@ -19,17 +19,19 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["**/*.json", "**/*.json5", "**/*.jsonc"],
-      parser: "jsonc-eslint-parser",
+      files: ['**/*.json', '**/*.json5', '**/*.jsonc'],
+      parser: 'jsonc-eslint-parser',
     },
   ],
-  plugins: ['react', 'jest'],
+  plugins: ['react', 'jest', 'react-hooks'],
   settings: {
     react: {
       version: '16.13',
     },
   },
   rules: {
+    'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
+    'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
     'react/prop-types': ['off'],
     'no-unused-vars': ['warn'],
     'jsonc/indent': ['error', 2],

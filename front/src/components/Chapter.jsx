@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { shallowEqual, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Check, Edit3 } from 'react-feather'
 
@@ -10,7 +10,6 @@ import buttonStyles from './button.module.scss'
 import styles from './chapter.module.scss'
 import fieldStyles from './field.module.scss'
 import Field from './Field'
-import { useCurrentUser } from '../contexts/CurrentUser'
 import clsx from 'clsx'
 
 export default function Chapter ({ article }) {
@@ -25,7 +24,7 @@ export default function Chapter ({ article }) {
   const [renaming, setRenaming] = useState(false)
   const [title, setTitle] = useState(article.title)
   const [tempTitle, setTempTitle] = useState(article.title)
-  const activeUser = useCurrentUser()
+  const activeUser = useSelector(state => state.activeUser, shallowEqual)
   const runQuery = useGraphQL()
 
   const rename = async (e) => {

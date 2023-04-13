@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Users } from 'react-feather'
 
 import Select from './Select'
@@ -16,7 +16,6 @@ export default function SelectUser ({ accounts }) {
   const setCurrentUserId = useCallback((userId) => dispatch({ type: 'USER_PREFERENCES_TOGGLE', key: 'currentUser', value: userId }), [])
 
   const handleCurrentUserChange = useCallback((event) => {
-    console.log('handleCurrentUserChange', event.target.value)
     setCurrentUserId(event.target.value)
   }, [currentUserId])
 

@@ -8,15 +8,14 @@ import { createTag as query } from './Tag.graphql'
 import styles from './createTag.module.scss'
 import Field from './Field'
 import Button from './Button'
-import { useCurrentUser } from '../contexts/CurrentUser'
-import { useDispatch } from 'react-redux'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 
 
 const CreateTag = forwardRef(({tags}, forwardedRef) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [color, setColor] = useState(randomColor())
-  const activeUser = useCurrentUser()
+  const activeUser = useSelector(state => state.activeUser, shallowEqual)
   const runQuery = useGraphQL()
   const dispatch = useDispatch()
 

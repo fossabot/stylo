@@ -9,7 +9,7 @@ import styles from './createArticle.module.scss'
 import Button from './Button'
 import Field from './Field'
 import ArticleTag from './Tag'
-import { useCurrentUser } from '../contexts/CurrentUser'
+import { shallowEqual, useSelector } from 'react-redux'
 
 
 const CreateArticle = forwardRef((_, forwardedRef) => {
@@ -17,7 +17,7 @@ const CreateArticle = forwardRef((_, forwardedRef) => {
   const [title, setTitle] = useState('')
   const [selectedTagIds, setSelectedtagIds] = useState([])
   const runQuery = useGraphQL()
-  const activeUser = useCurrentUser()
+  const activeUser = useSelector(state => state.activeUser, shallowEqual)
 
   useEffect(() => {
     // Self invoking async function

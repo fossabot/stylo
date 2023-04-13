@@ -62,6 +62,7 @@ export default function Login () {
           <a
             href="https://ecrituresnumeriques.ca/en/2019/10/25/Stylo-technical-and-editing-support"
             target="_blank"
+            rel="noreferrer"
           >
             weekly session
           </a>{' '}

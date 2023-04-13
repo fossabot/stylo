@@ -4,12 +4,12 @@ import { computed, useSignal } from '@preact/signals-react'
 import { useGraphQL } from '../helpers/graphQL'
 import ArticleTag from './Tag'
 import { addTags, removeTags } from './Articles.graphql'
-import { useCurrentUser } from '../contexts/CurrentUser'
+import { shallowEqual, useSelector } from 'react-redux'
 
 export default function ArticleTags ({ articleId, tags, userTags, onTagsUpdated }) {
 
   const runQuery = useGraphQL()
-  const activeUser = useCurrentUser()
+  const activeUser = useSelector(state => state.activeUser, shallowEqual)
   const articleTags = useSignal(tags)
   const selectedTagIds = computed(() => articleTags.value.map(({ _id }) => _id))
 

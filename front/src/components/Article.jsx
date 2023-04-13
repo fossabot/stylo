@@ -22,7 +22,7 @@ import { Check, ChevronDown, ChevronRight, Copy, Edit3, Eye, Printer, Share2, Tr
 import { duplicateArticle } from './Acquintances.graphql'
 import { renameArticle, getArticleVersions } from './Article.graphql'
 import { useGraphQL } from '../helpers/graphQL'
-import { useCurrentUser } from '../contexts/CurrentUser'
+import { shallowEqual, useSelector } from 'react-redux'
 
 
 export default function Article ({ article, tags: userTags, onTagsUpdated = () => {} }) {
@@ -38,7 +38,7 @@ export default function Article ({ article, tags: userTags, onTagsUpdated = () =
   const [sharing, setSharing] = useState(false)
 
   const runQuery = useGraphQL()
-  const activeUser = useCurrentUser()
+  const activeUser = useSelector(state => state.activeUser, shallowEqual)
 
   const activeUserId = activeUser._id
   const isArticleOwner = activeUserId === article.owner._id
@@ -91,9 +91,6 @@ export default function Article ({ article, tags: userTags, onTagsUpdated = () =
     event.stopPropagation()
     setRenaming(true)
   }, [])
-
-  console.log({article})
-  console.log({tags: article.tags})
 
   return (
     <article className={styles.article}>

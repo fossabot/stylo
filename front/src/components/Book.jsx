@@ -17,11 +17,11 @@ import fieldStyles from './field.module.scss'
 
 import Button from './Button'
 import Field from './Field'
-import { useCurrentUser } from '../contexts/CurrentUser'
 import clsx from 'clsx'
+import { shallowEqual, useSelector } from 'react-redux'
 
 export default function Book ({ name: tagName, _id, updatedAt, articles }) {
-  const activeUser = useCurrentUser()
+  const activeUser = useSelector(state => state.activeUser, shallowEqual)
 
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)

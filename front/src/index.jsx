@@ -93,7 +93,6 @@ render(
       <Router>
         <TrackPageViews />
         <Header />
-
         <App>
           <Switch>
             <Route path="/register" exact>
@@ -108,7 +107,7 @@ render(
               <Books />
             </PrivateRoute>
             {/* Workspaces index */}
-            <PrivateRoute path={['/workspaces', '/']} exact>
+            <PrivateRoute path='/workspaces' exact>
               <Workspaces />
             </PrivateRoute>
             <PrivateRoute path="/credentials" exact>
