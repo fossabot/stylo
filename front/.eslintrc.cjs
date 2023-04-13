@@ -30,7 +30,7 @@ module.exports = {
     },
   },
   rules: {
-    'react/prop-types': ['warn'],
+    'react/prop-types': ['off'],
     'no-unused-vars': ['warn'],
     'jsonc/indent': ['error', 2],
     // 'jsonc/sort-keys': ['warn'],

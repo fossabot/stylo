@@ -20,9 +20,17 @@ import { useActiveWorkspace } from '../hooks/workspace.js'
 import TagsList from './tag/TagsList.jsx'
 import Modal from './Modal.jsx'
 
+import { useSignal, computed } from '@preact/signals-react'
+
 export default function Articles () {
+
+  const tags = useSignal([])
+  const articles = useSignal([])
+  const selectedTagIds = useSignal([])
+  const articlesCount = computed(() => articles.value.length)
   const activeUser = useSelector(state => state.activeUser, shallowEqual)
-  const selectedTagIds = useSelector((state) => state.activeUser.selectedTagIds)
+
+  // actions
   const [creatingArticle, setCreatingArticle] = useState(false)
 
   const articleTitleField = createRef()
@@ -34,8 +42,6 @@ export default function Articles () {
 
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState('')
-  const [articles, setArticles] = useState([])
-
   const [needReload, setNeedReload] = useState(false)
 
   const [currentUser, setCurrentUser] = useState(activeUser)
@@ -47,55 +53,38 @@ export default function Articles () {
 
   const handleCloseCreatingArticle = useCallback(() => setCreatingArticle(false), [])
 
-  const handleReload = useCallback(() => setNeedReload(true), [])
-  const handleUpdateTags = useCallback((articleId, tags) => {
-    setArticles([...findAndUpdateArticleTags(articles, articleId, tags)])
-  }, [articles])
-
-
-  const handleUpdateTitle = useCallback((articleId, title) => {
-    // shallow copy otherwise React won't render the components again
-    setArticles([...findAndUpdateArticleTitle(articles, articleId, title)])
-  }, [articles])
-
-  const findAndUpdateArticleTags = (articles, articleId, tags) => {
-    const article = articles.find((a) => a._id === articleId)
-    article.tags = tags
-    return articles
-  }
-
-  const findAndUpdateArticleTitle = (articles, articleId, title) => {
-    const article = articles.find((a) => a._id === articleId)
-    article.title = title
-    return articles
-  }
-
-  const filterByTagsSelected = useCallback((article) => {
-    const listOfTagsSelected = selectedTagIds
-
-    if (listOfTagsSelected.length === 0) {
+  const filterByTagsSelected = (article) => {
+    if (selectedTagIds.value.length === 0) {
       return true
     }
-
     // if we find at least one matching tag in the selected list, we keep the article
-    return listOfTagsSelected.some(tag => {
-      return article.tags.find(({ _id }) => _id === tag._id)
+    return selectedTagIds.value.some(tagId => {
+      return article.tags.find(({ _id }) => _id === tagId)
     })
-  }, [activeUserId, selectedTagIds])
+  }
+
+  const selectedArticles = articles.value
+    .filter(filterByTagsSelected)
+    .filter(article => article.title.toLowerCase().indexOf(filter.toLowerCase()) > -1)
 
   useEffect(() => {
     //Self invoking async function
     (async () => {
       try {
         if (activeWorkspaceId) {
-          const data = await runQuery({ query: getWorkspaceArticles, variables: { workspaceId: activeWorkspaceId } })
-          setArticles(data.workspace.articles)
+          const data = await runQuery({
+            query: getWorkspaceArticles,
+            variables: { userId: activeUserId, workspaceId: activeWorkspaceId }
+          })
+          tags.value = data.tags
+          articles.value = data.workspace.articles
           setIsLoading(false)
           setNeedReload(false)
         } else {
-          const data = await runQuery({ query: getUserArticles, variables: { user: activeUserId } })
+          const data = await runQuery({ query: getUserArticles, variables: { userId: activeUserId } })
           // Need to sort by updatedAt desc
-          setArticles(data.articles)
+          tags.value = data.tags
+          articles.value = data.articles
           setCurrentUser(data.user)
           setIsLoading(false)
           setNeedReload(false)
@@ -125,7 +114,7 @@ export default function Articles () {
       <aside className={styles.filtersContainer}>
         <div className={styles.filtersTags}>
           <h4>Tags</h4>
-          <TagsList/>
+          <TagsList tags={tags} selectedTagIds={selectedTagIds}/>
         </div>
       </aside>
 
@@ -133,28 +122,30 @@ export default function Articles () {
         <Button primary={true} onClick={() => setCreatingArticle(true)}>
           Create a new article
         </Button>
-        <div className={styles.articleCounter}>{articles.length} article{articles.length > 1 ? 's' : ''}</div>
+        <div className={styles.articleCounter}>{articlesCount} article{articlesCount > 1 ? 's' : ''}</div>
       </div>
       {creatingArticle && (
         <Modal title="New article" cancel={handleCloseCreatingArticle}>
           <CreateArticle ref={articleTitleField}/>
         </Modal>
       )}
-      {isLoading ? <Loading/> : articles
-        .filter(filterByTagsSelected)
-        .filter(
-          (a) => a.title.toLowerCase().indexOf(filter.toLowerCase()) > -1
-        )
-        .map((article) => (
-          <Article
-            key={`article-${article._id}`}
-            tags={[]}
-            article={article}
-            setNeedReload={handleReload}
-            updateTagsHandler={handleUpdateTags}
-            updateTitleHandler={handleUpdateTitle}
-          />
-        ))}
+      {isLoading ? <Loading/> : selectedArticles.map(article => (
+        <Article
+          key={`article-${article._id}`}
+          tags={tags}
+          article={article}
+          onTagsUpdated={({ articleId, tags }) => {
+            articles.value = articles.value
+              .map((a) => {
+                if (a._id === articleId) {
+                  a.tags = tags
+                  return a
+                }
+                return a
+              })
+          }}
+        />
+      ))}
     </section>
   </CurrentUserContext.Provider>)
 }

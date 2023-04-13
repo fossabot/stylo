@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useSignal } from '@preact/signals-react'
 import clsx from 'clsx'
 
 import styles from './articles.module.scss'
@@ -13,7 +14,6 @@ import ArticleTags from './ArticleTags'
 import Share from './Share'
 
 import formatTimeAgo from '../helpers/formatTimeAgo'
-import etv from '../helpers/eventTargetValue'
 
 import Field from './Field'
 import Button from './Button'
@@ -24,29 +24,32 @@ import { renameArticle, getArticleVersions } from './Article.graphql'
 import { useGraphQL } from '../helpers/graphQL'
 import { useCurrentUser } from '../contexts/CurrentUser'
 
-export default function Article ({ article, setNeedReload, updateTitleHandler, updateTagsHandler, tags: userTags }) {
+
+export default function Article ({ article, tags: userTags, onTagsUpdated = () => {} }) {
+  const articleId = article._id
+  const articleTitle = useSignal(article.title)
+  const articleVersions = useSignal(article.versions || [])
+
+  // actions
   const [expanded, setExpanded] = useState(false)
   const [exporting, setExporting] = useState(false)
   const [deleting, setDeleting] = useState(false)
-  const [tags, setTags] = useState(article.tags)
   const [renaming, setRenaming] = useState(false)
-  const [title, setTitle] = useState(article.title)
-  const [versions, setVersions] = useState(article.versions || [])
-  const [tempTitle, setTempTitle] = useState(article.title)
   const [sharing, setSharing] = useState(false)
+
   const runQuery = useGraphQL()
   const activeUser = useCurrentUser()
 
-  const isArticleOwner = activeUser._id === article.owner._id
+  const activeUserId = activeUser._id
+  const isArticleOwner = activeUserId === article.owner._id
   const contributors = article.contributors.filter(c => c.user._id !== article.owner._id)
-  const handleTagUpdate = useCallback(tags => setTags(tags), [])
 
   useEffect(() => {
     (async () => {
       if (expanded) {
         try {
-          const data = await runQuery({ query: getArticleVersions, variables: { articleId: article._id } })
-          setVersions(data.article.versions)
+          const data = await runQuery({ query: getArticleVersions, variables: { articleId: articleId } })
+          articleVersions.value = data.article.versions
         } catch (err) {
           alert(err)
         }
@@ -64,41 +67,45 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
     try {
       await runQuery({
         query: duplicateArticle,
-        variables: { article: article._id, user: activeUser._id, to: activeUser._id }
+        variables: { article: articleId, user: activeUserId, to: activeUserId }
       })
-      setNeedReload()
     } catch (err) {
-      console.error(`Unable to duplicate article ${article._id} with myself (userId: ${activeUser._id})`, err)
+      console.error(`Unable to duplicate article ${articleId} with myself (userId: ${activeUserId})`, err)
       alert(err)
     }
-  }, [])
+  }, [articleId])
 
-  const rename = useCallback(async (e) => {
+  const handleRename = useCallback(async (e) => {
     e.preventDefault()
     const variables = {
-      user: activeUser._id,
-      article: article._id,
-      title: tempTitle,
+      user: activeUserId,
+      article: articleId,
+      title: articleTitle.value,
     }
     await runQuery({ query: renameArticle, variables })
-    setTitle(tempTitle)
+    article.title = articleTitle.value
     setRenaming(false)
-    if (updateTitleHandler) {
-      updateTitleHandler(article._id, tempTitle)
-    }
-  }, [tempTitle])
+  }, [articleTitle])
+
+  const handleEditTitle = useCallback((event) => {
+    event.stopPropagation()
+    setRenaming(true)
+  }, [])
+
+  console.log({article})
+  console.log({tags: article.tags})
 
   return (
     <article className={styles.article}>
       {exporting && (
         <Modal title="Export" cancel={() => setExporting(false)}>
-          <Export articleId={article._id} bib={article.workingVersion.bibPreview} name={article.title}/>
+          <Export articleId={articleId} bib={article.workingVersion.bibPreview} name={articleTitle.value}/>
         </Modal>
       )}
 
       {sharing && (
-        <Modal title="Share with Stylo users" cancel={() => setNeedReload() || setSharing(false)}>
-          <Share article={article} setNeedReload={setNeedReload} cancel={() => setSharing(false)}/>
+        <Modal title="Share with Stylo users" cancel={() => setSharing(false)}>
+          <Share article={article} cancel={() => setSharing(false)}/>
         </Modal>
       )}
 
@@ -108,24 +115,23 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
             {expanded ? <ChevronDown/> : <ChevronRight/>}
           </span>
 
-          {title}
+          {articleTitle}
 
-          <Button title="Edit" icon={true} className={styles.editTitleButton}
-                  onClick={(evt) => evt.stopPropagation() || setRenaming(true)}>
+          <Button title="Edit" icon={true} className={styles.editTitleButton} onClick={handleEditTitle}>
             <Edit3 size="20"/>
           </Button>
         </h1>
       )}
       {renaming && (
-        <form className={clsx(styles.renamingForm, fieldStyles.inlineFields)} onSubmit={(e) => rename(e)}>
-          <Field autoFocus={true} type="text" value={tempTitle} onChange={(e) => setTempTitle(etv(e))}
+        <form className={clsx(styles.renamingForm, fieldStyles.inlineFields)} onSubmit={handleRename}>
+          <Field autoFocus={true} type="text" value={articleTitle} onChange={(event) => articleTitle.value = event.target.value}
                  placeholder="Article Title"/>
-          <Button title="Save" primary={true} onClick={(e) => rename(e)}>
+          <Button title="Save" primary={true} onClick={handleRename}>
             <Check/> Save
           </Button>
           <Button title="Cancel" type="button" onClick={() => {
             setRenaming(false)
-            setTempTitle(article.title)
+            articleTitle.value = article.title
           }}>
             Cancel
           </Button>
@@ -151,12 +157,12 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
           <Printer/>
         </Button>
 
-        <Link title="Edit article" className={buttonStyles.primary} to={`/article/${article._id}`}>
+        <Link title="Edit article" className={buttonStyles.primary} to={`/article/${articleId}`}>
           <Edit3/>
         </Link>
 
         <Link title="Preview (open a new window)" target="_blank" className={buttonStyles.icon}
-              to={`/article/${article._id}/preview`}>
+              to={`/article/${articleId}/preview`}>
           <Eye/>
         </Link>
       </aside>
@@ -171,13 +177,13 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
             Cancel
           </Button>
 
-          <ArticleDelete article={article} setNeedReload={setNeedReload}/>
+          <ArticleDelete article={article}/>
         </div>
       )}
 
       <section className={styles.metadata}>
         <p className={styles.metadataAuthoring}>
-          {tags.map((t) => (
+          {article.tags.map((t) => (
             <span className={styles.tagChip} key={'tagColor-' + t._id} style={{ backgroundColor: t.color || 'grey' }}/>
           ))}
           by <span className={styles.author}>{article.owner.displayName}</span>
@@ -194,9 +200,9 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
           <>
             <h4>Last versions</h4>
             <ul className={styles.versions}>
-              {versions.map((v) => (
+              {articleVersions.value.map((v) => (
                 <li key={`version-${v._id}`}>
-                  <Link to={`/article/${article._id}/version/${v._id}`}>{`${
+                  <Link to={`/article/${articleId}/version/${v._id}`}>{`${
                     v.message ? v.message : 'no label'
                   } (v${v.version}.${v.revision})`}</Link>
                 </li>
@@ -205,7 +211,7 @@ export default function Article ({ article, setNeedReload, updateTitleHandler, u
 
             <h4>Tags</h4>
             <div className={styles.editTags}>
-              <ArticleTags articleId={article._id} tags={tags} userTags={userTags} onChange={handleTagUpdate}/>
+              <ArticleTags articleId={articleId} tags={article.tags} userTags={userTags} onTagsUpdated={onTagsUpdated}/>
             </div>
           </>
         )}

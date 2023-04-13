@@ -1,4 +1,4 @@
-import React, { useEffect, createRef, useState, forwardRef, useCallback } from 'react'
+import React, { useState, forwardRef, useCallback } from 'react'
 
 import { randomColor } from '../helpers/colors.js'
 import etv from '../helpers/eventTargetValue'
@@ -12,7 +12,7 @@ import { useCurrentUser } from '../contexts/CurrentUser'
 import { useDispatch } from 'react-redux'
 
 
-const CreateTag = forwardRef((_, forwardedRef) => {
+const CreateTag = forwardRef(({tags}, forwardedRef) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [color, setColor] = useState(randomColor())
@@ -35,6 +35,7 @@ const CreateTag = forwardRef((_, forwardedRef) => {
           query,
           variables
         })
+        tags.value = [...tags.value, createTag]
         dispatch({ type: 'TAG_CREATED', tag: createTag })
       } catch (err) {
         alert(err)

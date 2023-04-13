@@ -277,7 +277,7 @@ type Query {
   tag(user: ID, tag: ID!): Tag
 
   "Fetch a given user articles"
-  articles (user: ID): [Article]
+  articles(user: ID): [Article]
 
   "Fetch article info [need to have access to this article]"
   article(user: ID, article: ID!): Article

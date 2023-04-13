@@ -1,34 +1,19 @@
 import React, { createRef, useCallback, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import styles from '../articles.module.scss'
 import ArticleTag from '../Tag.jsx'
 import Button from '../Button.jsx'
 import Modal from '../Modal.jsx'
 import CreateTag from '../CreateTag.jsx'
-import { getTags } from '../Tag.graphql'
-import { useGraphQL } from '../../helpers/graphQL.js'
 
-export default function TagsList () {
-  const dispatch = useDispatch()
+export default function TagsList ({ tags, selectedTagIds }) {
   const [creatingTag, setCreatingTag] = useState(false)
   const handleCloseCreatingTag = useCallback(() => setCreatingTag(false), [])
-  const [tags, setTags] = useState([])
-  const selectedTagIds = useSelector(state => state.activeUser.selectedTagIds)
   const latestTagCreated = useSelector(state => state.latestTagCreated)
-  const runQuery = useGraphQL()
 
   useEffect(() => {
     setCreatingTag(false)
-    // Self invoking async function
-    ;(async () => {
-      try {
-        const { user: { tags } } = await runQuery({ query: getTags, variables: {} })
-        setTags(tags)
-      } catch (err) {
-        alert(err)
-      }
-    })()
   }, [latestTagCreated])
 
   const tagNameField = createRef()
@@ -38,14 +23,18 @@ export default function TagsList () {
     }
   }, [tagNameField])
 
-  const handleTagSelected = useCallback((event) => {
+  const handleTagSelected = (event) => {
     const { id } = event.target.dataset
-    dispatch({ type: 'UPDATE_SELECTED_TAG', tagId: id })
-  }, [selectedTagIds])
+    if (selectedTagIds.value.includes(id)) {
+      selectedTagIds.value = selectedTagIds.value.filter((tagId) => tagId !== id)
+    } else {
+      selectedTagIds.value = [...selectedTagIds.value, id]
+    }
+  }
 
   return (<>
     <ul className={styles.filterByTags}>
-      {tags.map((t) => (
+      {tags.value.map((t) => (
         <li key={`filterTag-${t._id}`}>
           <ArticleTag
             tag={t}
@@ -61,7 +50,7 @@ export default function TagsList () {
     </ul>
     {creatingTag && (
       <Modal title="New tag" cancel={handleCloseCreatingTag}>
-        <CreateTag ref={tagNameField}/>
+        <CreateTag tags={tags} ref={tagNameField}/>
       </Modal>
     )}
   </>)

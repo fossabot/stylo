@@ -1,5 +1,5 @@
-query getUserArticles($user: ID!) {
-  user(user: $user) {
+query getUserArticles($userId: ID!) {
+  user(user: $userId) {
     _id
     displayName
 
@@ -11,7 +11,7 @@ query getUserArticles($user: ID!) {
     }
   }
 
-  tags(user: $user) {
+  tags(user: $userId) {
     _id
     owner
     description
@@ -19,7 +19,7 @@ query getUserArticles($user: ID!) {
     name
   }
 
-  articles(user: $user) {
+  articles(user: $userId) {
     _id
     title
     updatedAt
@@ -54,7 +54,15 @@ query getUserArticles($user: ID!) {
   }
 }
 
-query getWorkspaceArticles ($workspaceId: ID!) {
+query getWorkspaceArticles ($userId: ID!, $workspaceId: ID!) {
+  tags(user: $userId) {
+    _id
+    owner
+    description
+    color
+    name
+  }
+
   workspace(workspaceId: $workspaceId) {
     articles {
       _id

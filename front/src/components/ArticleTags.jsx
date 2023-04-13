@@ -1,50 +1,41 @@
-import React, { useCallback, useState } from 'react'
+import React from 'react'
+import { computed, useSignal } from '@preact/signals-react'
+
 import { useGraphQL } from '../helpers/graphQL'
-
 import ArticleTag from './Tag'
-
 import { addTags, removeTags } from './Articles.graphql'
 import { useCurrentUser } from '../contexts/CurrentUser'
-import { useMemo } from 'react'
 
-export default function ArticleTags ({ articleId, onChange, tags, userTags }) {
+export default function ArticleTags ({ articleId, tags, userTags, onTagsUpdated }) {
+
   const runQuery = useGraphQL()
   const activeUser = useCurrentUser()
-  const selectedTags = tags.map(({ _id }) => _id)
+  const articleTags = useSignal(tags)
+  const selectedTagIds = computed(() => articleTags.value.map(({ _id }) => _id))
 
-  const userTagsIds = useMemo(() => userTags.map(({ _id }) => _id), [userTags])
-  const remoteTags = useMemo(() => tags.filter(({ _id }) => userTagsIds.includes(_id) === false), [tags])
-  const handleClick = useCallback(async (event) => {
+  const handleClick = async (event) => {
     const [id, checked] = [event.target.value, event.target.checked]
     const variables = { article: articleId, tags: [id], user: activeUser._id }
 
-    const [query, updatedSelectedTags] = checked
-      ? [addTags, [...selectedTags, id]]
-      : [removeTags, selectedTags.filter(v => v !== id)]
-
+    const query = checked ? addTags : removeTags
     await runQuery({ query, variables })
-    const allTags = [].concat(tags, userTags)
+    const selectedTag = userTags.value.find((t) => t._id === id)
 
-    // Bubble up article Tag objects replacements
-    onChange(updatedSelectedTags.map(id => allTags.find(({ _id }) => _id === id)))
-  }, [selectedTags])
+    if (checked) {
+      articleTags.value = [...articleTags.value, selectedTag]
+    } else {
+      articleTags.value = articleTags.value.filter((t) => t._id !== id)
+    }
+    onTagsUpdated({ articleId, tags: articleTags.value })
+  }
 
   return (
     <ul>
-      {userTags.map((tag) => (
+      {userTags.value.map((tag) => (
         <li key={`article-${articleId}-${tag._id}`}>
-          <ArticleTag tag={tag} selected={selectedTags.includes(tag._id)} onClick={handleClick} />
+          <ArticleTag tag={tag} selected={selectedTagIds.value.includes(tag._id)} onClick={handleClick}/>
         </li>
       ))}
-
-      {remoteTags
-        .map((tag) => (
-          <li key={`article-${articleId}-${tag._id}`}>
-            <ArticleTag tag={tag} selected={selectedTags.includes(tag._id)}
-              disableAction={true}
-            />
-          </li>
-        ))}
     </ul>
   )
 }
