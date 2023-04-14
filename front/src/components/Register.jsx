@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import etv from '../helpers/eventTargetValue'
 import validateEmail from '../helpers/validationEmail'
@@ -13,7 +13,7 @@ import Button from './Button'
 import { ArrowLeftCircle, Check } from 'react-feather'
 
 function Register () {
-  const history = useHistory()
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -60,7 +60,7 @@ function Register () {
     try {
       await runQuery({ query: queries.createUser, variables: { details } })
       // if no error thrown, we can navigate to /
-      history.push('/')
+      navigate('/')
     } catch (err) {
       console.log('Unable to create a user', err)
     }

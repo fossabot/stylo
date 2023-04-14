@@ -1,10 +1,16 @@
-import { applyMiddleware, compose, createStore } from 'redux'
+import { configureStore } from '@reduxjs/toolkit'
 import { toEntries } from './helpers/bibtex'
 import ArticleService from './services/ArticleService'
 import WorkspaceService from './services/WorkspaceService.js'
+import userPreferencesReducer from './userPreferencesState.js'
+import applicationConfigReducer from './applicationConfigState.js'
+import sessionTokenReducer from './sessionTokenState.js'
+import userReducer from './userState.js'
+import bootReducer from './bootReducer.js'
 
 const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName = 'sessionToken' } = import.meta.env
 
+/*
 function createReducer (initialState, handlers) {
   return function reducer (state = initialState, action) {
     if (Object.prototype.hasOwnProperty.call(handlers, action.type)) {
@@ -13,7 +19,7 @@ function createReducer (initialState, handlers) {
       return state
     }
   }
-}
+}*/
 
 // Définition du store Redux et de l'ensemble des actions
 const initialState = {
@@ -65,10 +71,8 @@ const initialState = {
     column: 0
   }
 }
-
+/*
 const reducer = createReducer(initialState, {
-  APPLICATION_CONFIG: setApplicationConfig,
-  PROFILE: setProfile,
   CLEAR_ZOTERO_TOKEN: clearZoteroToken,
   LOGIN: loginUser,
   UPDATE_SESSION_TOKEN: setSessionToken,
@@ -99,7 +103,7 @@ const reducer = createReducer(initialState, {
   UPDATE_SELECTED_TAG: updateSelectedTag,
   TAG_CREATED: tagCreated,
 })
-
+*/
 const createNewArticleVersion = store => {
   return next => {
     return async (action) => {
@@ -216,30 +220,6 @@ function persistStateIntoLocalStorage ({ getState }) {
       }
 
       return next(action)
-    }
-  }
-}
-
-function setApplicationConfig (state, action) {
-  const applicationConfig = {
-    ...action.applicationConfig
-  }
-
-  return { ...state, applicationConfig }
-}
-
-function setProfile (state, action) {
-  const { user } = action
-  if (!user) {
-    return { ...state, activeUser: undefined, hasBooted: true }
-  }
-  return {
-    ...state,
-    hasBooted: true,
-    logedIn: true,
-    activeUser: {
-      ...state.activeUser,
-      ...user
     }
   }
 }
@@ -427,15 +407,23 @@ function updateSelectedTag (state, { tagId }) {
   }
 }
 
-function tagCreated(state, { tag }) {
+function tagCreated (state, { tag }) {
   return {
     ...state,
     latestTagCreated: tag
   }
 }
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-
-export default () => createStore(reducer, composeEnhancers(
-  applyMiddleware(createNewArticleVersion, persistStateIntoLocalStorage)
-))
+export default () => configureStore(
+  {
+    reducer: {
+      hasBooted: bootReducer,
+      userPreferences: userPreferencesReducer,
+      sessionToken: sessionTokenReducer,
+      applicationConfig: applicationConfigReducer,
+      activeUser: userReducer,
+    },
+    middleware: [createNewArticleVersion, persistStateIntoLocalStorage],
+    preloadedState: initialState
+  }
+)

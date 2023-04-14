@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import styles from './CompareSelect.module.scss'
 import Select from "../../../Select";
@@ -14,7 +14,7 @@ export default function CompareSelect ({
                                        }) {
   const articleVersions = useSelector(state => state.articleVersions)
   const [compareVersionId, setCompareVersionId] = useState(null)
-  const history = useHistory()
+  const history = useNavigate()
   const handleCompareSelect = useCallback(
     (e) => {
       const compareVersionId = e.target.value

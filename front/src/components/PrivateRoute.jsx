@@ -5,7 +5,7 @@ import { Route } from 'react-router-dom'
 import Login from './Login'
 
 function PrivateRoute ({ children, ...rest }) {
-  const connected = useSelector(state => state.logedIn)
+  const connected = useSelector(state => state.activeUser._id !== undefined)
 
   return (
     <Route

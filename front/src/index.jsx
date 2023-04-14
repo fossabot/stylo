@@ -1,179 +1,171 @@
 import './wdyr.js'
 import 'core-js/modules/web.structured-clone'
-import React, { lazy } from 'react'
-import { render } from 'react-dom'
-import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom'
-import { Provider } from 'react-redux'
+import React, { lazy, useEffect } from 'react'
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'
 
 import './styles/general.scss'
 import App from './layouts/App'
-import createStore from './createReduxStore'
 import { getUserProfile } from './helpers/userProfile'
 import { getApplicationConfig } from './helpers/applicationConfig'
 
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Register from './components/Register'
-import PrivateRoute from './components/PrivateRoute'
 import NotFound from './components/404'
-import Error from './components/Error'
-import Button from './components/Button'
-import Field from './components/Field'
-import { Check, Copy, Search } from 'react-feather'
-import buttonStyles from './components/button.module.scss'
-import Select from './components/Select'
+import Login from './components/Login.jsx'
+import { computed, signal } from '@preact/signals-react'
+import { AppState } from './contexts/AppState.js'
+
+const { SNOWPACK_SESSION_STORAGE_ID: sessionTokenName = 'sessionToken' } = import.meta.env
 
 // lazy loaded routes
 const Books = lazy(() => import('./components/Books'))
 const Articles = lazy(() => import('./components/Articles'))
 const Workspaces = lazy(() => import('./pages/Workspaces'))
-const Credentials = lazy(() => import('./components/Credentials'))
-const Write = lazy(() => import('./components/Write/Write'))
-const ArticlePreview = lazy(() => import('./components/ArticlePreview'))
-const Privacy = lazy(() => import('./components/Privacy'))
 
-const store = createStore()
+const applicationConfig = signal({
+  backendEndpoint: import.meta.env.SNOWPACK_PUBLIC_BACKEND_ENDPOINT,
+  graphqlEndpoint: import.meta.env.SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT,
+  exportEndpoint: import.meta.env.SNOWPACK_PUBLIC_EXPORT_ENDPOINT,
+  processEndpoint: import.meta.env.SNOWPACK_PUBLIC_PROCESS_ENDPOINT,
+  pandocExportEndpoint: import.meta.env.SNOWPACK_PUBLIC_PANDOC_EXPORT_ENDPOINT,
+  humanIdRegisterEndpoint: import.meta.env.SNOWPACK_PUBLIC_HUMAN_ID_REGISTER_ENDPOINT,
+})
+const activeUser = signal(undefined)
+const activeWorkspaceId = signal(undefined)
+const applicationStarted = signal(false)
+const sessionToken = signal(localStorage.getItem(sessionTokenName))
 
-;(async () => {
-  let { applicationConfig: defaultApplicationConfig, sessionToken } = store.getState()
-  const authToken = new URLSearchParams(location.hash).get('#auth-token')
-  if (authToken) {
-    store.dispatch({ type: 'UPDATE_SESSION_TOKEN', token:  authToken})
-    sessionToken = authToken
-    window.history.replaceState({}, '', location.pathname)
-  }
+function createAppState () {
+  const activeWorkspace = computed(() => activeUser.value.workspaces.find((workspace) => workspace._id === activeWorkspaceId.value))
+  return { activeUser, applicationStarted, applicationConfig, sessionToken, activeWorkspaceId, activeWorkspace }
+}
 
-  const applicationConfig = await getApplicationConfig(defaultApplicationConfig)
-  store.dispatch({ type: 'APPLICATION_CONFIG', applicationConfig })
+(async () => {
+  // const authToken = new URLSearchParams(location.hash).get('#auth-token')
+  // if (authToken) {
+  //   store.dispatch({ type: 'UPDATE_SESSION_TOKEN', token: authToken })
+  //   sessionToken = authToken
+  //   window.history.replaceState({}, '', location.pathname)
+  // }
+  applicationConfig.value = await getApplicationConfig(applicationConfig.value)
 
   try {
-    const { user, token } = await getUserProfile({ applicationConfig, sessionToken })
-    store.dispatch({ type: 'PROFILE', user, token })
-  }
-  catch (error) {
+    const { user } = await getUserProfile({
+      applicationConfig: applicationConfig.value,
+      sessionToken: sessionToken.value
+    })
+    activeUser.value = user
+  } catch (error) {
     console.log('User seemingly not authenticated: %s', error.message)
-    store.dispatch({ type: 'PROFILE' })
+  } finally {
+    applicationStarted.value = true
   }
-
-  // refresh session profile whenever something happens to the session token
-  // maybe there is a better way to do this
-  store.subscribe(() => {
-    const previousValue = sessionToken
-    const { sessionToken:currentValue } = store.getState()
-
-    if (currentValue !== previousValue) {
-      sessionToken = currentValue
-      getUserProfile({ applicationConfig, sessionToken })
-        .then((response) => store.dispatch({ type: 'PROFILE', ...response }))
-    }
-  })
 })()
 
 const TrackPageViews = () => {
-  const history = useHistory()
+  const location = useLocation()
 
-  history.listen(({ pathname, search, state }, action) => {
-    /* global _paq */
-    const _paq = window._paq = window._paq || [];
+  useEffect(() => {
+    const _paq = window._paq = window._paq || []
 
     //@todo do this dynamically, based on a subscription to the store
     //otherwise, we should use _paq.push(['forgetConsentGiven'])
     _paq.push(['setConsentGiven'])
-    _paq.push(['setCustomUrl', pathname])
+    _paq.push(['setCustomUrl', location.pathname])
     //_paq.push(['setDocumentTitle', 'My New Title'])
     _paq.push(['trackPageView'])
-  })
+  }, [location])
 
   return null
 }
 
-render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <Router>
-        <TrackPageViews />
-        <Header />
-        <App>
-          <Switch>
-            <Route path="/register" exact>
-              <Register />
-            </Route>
-            {/* Articles index */}
-            <PrivateRoute path={['/articles', '/']} exact>
-              <Articles />
-            </PrivateRoute>
-            {/* Books index */}
-            <PrivateRoute path="/books" exact>
-              <Books />
-            </PrivateRoute>
-            {/* Workspaces index */}
-            <PrivateRoute path='/workspaces' exact>
-              <Workspaces />
-            </PrivateRoute>
-            <PrivateRoute path="/credentials" exact>
-              <Credentials />
-            </PrivateRoute>
-            {/* Annotate a Book */}
-            <Route path={[`/books/:bookId/preview`]} exact>
-              <ArticlePreview />
-            </Route>
-            {/* Annotate an article or its version */}
-            <Route path={[`/article/:id/version/:version/preview`, `/article/:id/preview`]} exact>
-              <ArticlePreview />
-            </Route>
-            {/* Write and Compare */}
-            <PrivateRoute path={[`/article/:id/compare/:compareTo`, `/article/:id/version/:version/compare/:compareTo`]} exact>
-              <Write />
-            </PrivateRoute>
-            {/* Write with a given version */}
-            <PrivateRoute path={`/article/:id/version/:version`} exact>
-              <Write />
-            </PrivateRoute>
-            {/* Write and/or Preview */}
-            <PrivateRoute path={[`/article/:id/preview`, `/article/:id`]} exact>
-              <Write />
-            </PrivateRoute>
-            <Route exact path="/privacy">
-              <Privacy />
-            </Route>
-            <Route exact path="/ux">
-              <h2>Buttons</h2>
-              <h4>Primary</h4>
-              <Button primary={true}>Create New Article</Button>
-              <h4>Secondary</h4>
-              <Button>Manage Tags</Button>
-              <h4>With Icon</h4>
-              <Button><Check/> Save</Button>
-              <h4>Icon Only</h4>
-              <Button icon={true}><Copy/></Button>
-              <h2>Fields</h2>
-              <h4>Search</h4>
-              <Field placeholder="Search" icon={Search}/>
-              <h4>Textarea</h4>
-              <div style={{'max-width': '50%'}}>
-                <textarea className={buttonStyles.textarea} rows="10">Du texte</textarea>
-              </div>
-              <h4>Select</h4>
-              <Select>
-                <option>Tome de Savoie</option>
-                <option>Reblochon</option>
-                <option>St Marcellin</option>
-              </Select>
-              <h4>Tabs</h4>
-              <h4>Form actions</h4>
-            </Route>
-            <Route exact path="/error">
-              <Error />
-            </Route>
-            <Route path="*">
-              <NotFound />
-            </Route>
-          </Switch>
-        </App>
+const ProtectedRoute = ({ children }) => {
+  const location = useLocation()
+  if (activeUser.value._id === undefined) {
+    return <Login from={location}/>
+  }
+  return children
+}
 
-        <Footer />
-      </Router>
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
-)
+const root = createRoot(document.getElementById('root'))
+root.render(<React.StrictMode>
+  <AppState.Provider value={createAppState()}>
+    <Router>
+      <TrackPageViews/>
+      <Header/>
+      <App>
+        <Routes>
+          <Route path="/register" exact element={<Register/>}/>
+          {/* Articles index */}
+          <Route path="/articles" exact element={<Articles/>}/>
+          <Route path="/" exact element={<Articles/>}/>
+          {/* Books index */}
+          <Route path="/books" exact element={<ProtectedRoute><Books/></ProtectedRoute>}/>
+          {/* Workspaces index */}
+          <Route path="/workspaces" exact element={<ProtectedRoute> <Workspaces/></ProtectedRoute>}/>
+          {/*<PrivateRoute path="/credentials" exact>*/}
+          {/*  <Credentials/>*/}
+          {/*</PrivateRoute>*/}
+          {/*/!* Annotate a Book *!/*/}
+          {/*<Route path={[`/books/:bookId/preview`]} exact>*/}
+          {/*  <ArticlePreview/>*/}
+          {/*</Route>*/}
+          {/*/!* Annotate an article or its version *!/*/}
+          {/*<Route path={[`/article/:id/version/:version/preview`, `/article/:id/preview`]} exact>*/}
+          {/*  <ArticlePreview/>*/}
+          {/*</Route>*/}
+          {/*/!* Write and Compare *!/*/}
+          {/*<PrivateRoute path={[`/article/:id/compare/:compareTo`, `/article/:id/version/:version/compare/:compareTo`]}*/}
+          {/*              exact>*/}
+          {/*  <Write/>*/}
+          {/*</PrivateRoute>*/}
+          {/*/!* Write with a given version *!/*/}
+          {/*<PrivateRoute path={`/article/:id/version/:version`} exact>*/}
+          {/*  <Write/>*/}
+          {/*</PrivateRoute>*/}
+          {/*/!* Write and/or Preview *!/*/}
+          {/*<PrivateRoute path={[`/article/:id/preview`, `/article/:id`]} exact>*/}
+          {/*  <Write/>*/}
+          {/*</PrivateRoute>*/}
+          {/*<Route exact path="/privacy">*/}
+          {/*  <Privacy/>*/}
+          {/*</Route>*/}
+          {/*<Route exact path="/ux">*/}
+          {/*  <h2>Buttons</h2>*/}
+          {/*  <h4>Primary</h4>*/}
+          {/*  <Button primary={true}>Create New Article</Button>*/}
+          {/*  <h4>Secondary</h4>*/}
+          {/*  <Button>Manage Tags</Button>*/}
+          {/*  <h4>With Icon</h4>*/}
+          {/*  <Button><Check/> Save</Button>*/}
+          {/*  <h4>Icon Only</h4>*/}
+          {/*  <Button icon={true}><Copy/></Button>*/}
+          {/*  <h2>Fields</h2>*/}
+          {/*  <h4>Search</h4>*/}
+          {/*  <Field placeholder="Search" icon={Search}/>*/}
+          {/*  <h4>Textarea</h4>*/}
+          {/*  <div style={{ 'max-width': '50%' }}>*/}
+          {/*    <textarea className={buttonStyles.textarea} rows="10">Du texte</textarea>*/}
+          {/*  </div>*/}
+          {/*  <h4>Select</h4>*/}
+          {/*  <Select>*/}
+          {/*    <option>Tome de Savoie</option>*/}
+          {/*    <option>Reblochon</option>*/}
+          {/*    <option>St Marcellin</option>*/}
+          {/*  </Select>*/}
+          {/*  <h4>Tabs</h4>*/}
+          {/*  <h4>Form actions</h4>*/}
+          {/*</Route>*/}
+          {/*<Route exact path="/error">*/}
+          {/*  <Error/>*/}
+          {/*</Route>*/}
+          <Route path="*" element={<NotFound/>}/>
+        </Routes>
+      </App>
+
+      <Footer/>
+    </Router>
+  </AppState.Provider>
+</React.StrictMode>)

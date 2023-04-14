@@ -1,5 +1,6 @@
-import { shallowEqual, useSelector } from "react-redux"
+import { useContext } from 'react'
 import { print } from 'graphql/language/printer'
+import { AppState } from '../contexts/AppState.js'
 
 /**
  * @typedef {import('graphql/language/ast').DocumentNode} DocumentNode
@@ -54,9 +55,7 @@ export default async function askGraphQL (
 }
 
 export function useGraphQL () {
-  const sessionToken = useSelector(state => state.sessionToken)
-  const graphqlEndpoint = useSelector(state => state.applicationConfig.graphqlEndpoint, shallowEqual)
-
+  const { applicationConfig: { graphqlEndpoint }, sessionToken } = useContext(AppState)
   return runQuery.bind(null, { sessionToken, graphqlEndpoint })
 }
 
@@ -65,7 +64,7 @@ export function useGraphQL () {
  * @param {{ query: {DocumentNode|string}, variables: {Object}}}
  * @return {Promise<string|object>}
  */
-export function runQuery({ sessionToken, graphqlEndpoint }, { query: queryOrAST, variables }) {
+export function runQuery ({ sessionToken, graphqlEndpoint }, { query: queryOrAST, variables }) {
   const query = typeof queryOrAST === 'string' ? queryOrAST : print(queryOrAST)
 
   return askGraphQL({ query, variables }, null, sessionToken, { graphqlEndpoint })

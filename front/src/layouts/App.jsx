@@ -1,15 +1,15 @@
-import React, { Suspense } from 'react'
-import { useSelector } from 'react-redux'
+import React, { Suspense, useContext } from 'react'
 
 import Loading from '../components/Loading'
+import { AppState } from '../contexts/AppState.js'
 
 export default function StyloApp ({ children }) {
-  const hasBooted = useSelector(state => state.hasBooted)
+  const { applicationStarted } = useContext(AppState)
 
   return (
     <main>
-      <Suspense fallback={<Loading />}>
-        {hasBooted ? (children) : <Loading />}
+      <Suspense fallback={<Loading/>}>
+        {applicationStarted.value ? (children) : <Loading/>}
       </Suspense>
     </main>
   )

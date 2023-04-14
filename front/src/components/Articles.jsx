@@ -1,46 +1,18 @@
-import React, { useState, useEffect } from 'react'
-// import { useSignal } from '@preact/signals-react'
-// FIXME: CANNOT USE useSignal with React PrivateRoute
-/*
-React has detected a change in the order of Hooks called by PrivateRoute. This will lead to bugs and errors if not fixed. For more information, read the Rules of Hooks: https://fb.me/rules-of-hooks
+import React, { useContext } from 'react'
 
-   Previous render            Next render
-   ------------------------------------------------------
-1. useContext                 useRef
-   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-    in PrivateRoute (at src/index.jsx:134)
-    in Switch2 (at src/index.jsx:129)
-    in Suspense (at App.jsx:11)
-    in main (at App.jsx:10)
-    in StyloApp (at src/index.jsx:128)
-    in Router2 (created by BrowserRouter2)
-    in BrowserRouter2 (at src/index.jsx:125)
-    in Provider (at src/index.jsx:124)
-    in StrictMode (at src/index.jsx:123)
- */
-import { useGraphQL } from '../helpers/graphQL'
-import { getUserArticles, getWorkspaceArticles } from './Articles.graphql'
-
-import Article from './Article'
-import Loading from './Loading'
 import WorkspaceLabel from './header/WorkspaceLabel.jsx'
-import { useActiveWorkspace } from '../hooks/workspace.js'
-import { useActiveUserId } from '../hooks/user.js'
 
 import styles from './articles.module.scss'
+import { AppState } from '../contexts/AppState.js'
 
 export default function Articles () {
 
-  const activeWorkspace = useActiveWorkspace()
-  const activeWorkspaceId = activeWorkspace?._id
-  const activeUserId = useActiveUserId()
+  const { activeWorkspace } = useContext(AppState)
 
-  const [isLoading, setIsLoading] = useState(true)
-  const [articles, setArticles] = useState([])
+  //const { data, error } = useArticles({ userId: activeUserId, workspaceId: activeWorkspaceId })
+  //console.log({ data, error })
 
-  const runQuery = useGraphQL()
-
+  /*
   useEffect(() => {
     //Self invoking async function
     (async () => {
@@ -62,7 +34,7 @@ export default function Articles () {
         alert(err)
       }
     })()
-  })
+  })*/
 
   /*const tags = useSignal([])
   const articles = useSignal([])
@@ -144,7 +116,7 @@ export default function Articles () {
   return (<section className={styles.section}>
     <header className={styles.articlesHeader}>
       <h1>Articles</h1>
-      {activeWorkspace && <WorkspaceLabel color={activeWorkspace.color} name={activeWorkspace.name}/>}
+      {activeWorkspace.value && <WorkspaceLabel color={activeWorkspace.value.color} name={activeWorkspace.value.name}/>}
     </header>
     {/*  <div className={styles.actions}>
         <Field className={styles.searchField}
@@ -174,7 +146,7 @@ export default function Articles () {
     {/*    <CreateArticle ref={articleTitleField}/>*/}
     {/*  </Modal>*/}
     {/*)}*/}
-    <>
+    {/*    <>
       {isLoading ? <Loading/> : articles.map(article => {
         return (
           <Article
@@ -184,6 +156,6 @@ export default function Articles () {
           />
         )
       })}
-    </>
+    </>*/}
   </section>)
 }

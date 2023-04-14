@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Layers, LogOut, User } from 'react-feather'
 
@@ -8,34 +7,50 @@ import styles from './UserMenu.module.scss'
 import Button from '../Button.jsx'
 import WorkspaceMenuItem from './WorkspaceMenuItem.jsx'
 import UserMenuLink from './UserMenuLink.jsx'
+import { AppState } from '../../contexts/AppState.js'
 
 
 export default function UserMenu () {
-  const dispatch = useDispatch()
   const logout = () => {
     setIsComponentVisible(false)
-    dispatch({ type: 'LOGOUT' })
+    // FIXME: logout!
+    activeUser.value = undefined
   }
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false)
-  const activeUser = useSelector(state => state.activeUser)
-  const activeWorkspace = activeUser.workspaces.find((workspace) => workspace._id === activeUser.activeWorkspaceId)
+  const { activeUser, activeWorkspace } = useContext(AppState)
+  const username = activeUser.value.displayName
+  const email = activeUser.value.email
+  const workspaces = activeUser.value.workspaces
 
   useEffect(() => {
     setIsComponentVisible(false)
-  }, [activeUser.activeWorkspaceId])
+  }, [setIsComponentVisible, activeWorkspace.value])
 
   return (
     <div ref={ref} className={styles.container}>
       <div className={styles.userMenuLink} onClick={() => setIsComponentVisible(!isComponentVisible)}>
-        <UserMenuLink username={activeUser.displayName} activeWorkspace={activeWorkspace}/>
+        <UserMenuLink username={username} activeWorkspace={activeWorkspace.value}/>
       </div>
       {isComponentVisible && <div className={styles.menu}>
         <div className={styles.workspaces}>
           <h4>Espaces de travail</h4>
           <ul>
             <WorkspaceMenuItem color="#D9D9D9" name="Mon espace"/>
-            {activeUser.workspaces.map((workspace) => <WorkspaceMenuItem id={workspace._id} key={workspace._id} color={workspace.color} name={workspace.name} />)}
-            <li className={styles.workspacesLink}><Link to="/workspaces" onClick={() => setIsComponentVisible(false)}><Layers/> Tous les espaces</Link></li>
+            {workspaces.map((workspace) =>
+              <WorkspaceMenuItem
+                id={workspace._id}
+                key={workspace._id}
+                color={workspace.color}
+                name={workspace.name}
+              />
+            )}
+            <li className={styles.workspacesLink}>
+              <Link to="/workspaces"
+                    onClick={() => setIsComponentVisible(false)}>
+                <Layers/>
+                Tous les espaces
+              </Link>
+            </li>
           </ul>
         </div>
         <div className={styles.footer}>
@@ -43,8 +58,8 @@ export default function UserMenu () {
             <Link to="/credentials" onClick={() => setIsComponentVisible(false)} className={styles.userCard}>
               <div className={styles.persona}><User/></div>
               <div className={styles.userInfo}>
-                <div className={styles.username}>{activeUser.displayName}</div>
-                <div className={styles.email}>{activeUser.email}</div>
+                <div className={styles.username}>{username}</div>
+                <div className={styles.email}>{email}</div>
               </div>
             </Link>
             <Button className={styles.logoutButton} onClick={logout} link>

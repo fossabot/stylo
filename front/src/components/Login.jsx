@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 
 import styles from './login.module.scss'
@@ -13,7 +13,7 @@ export default function Login () {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const dispatch = useDispatch()
-  const { replace, location } = useHistory()
+  const { replace, location } = useNavigate()
   const setSessionToken = useCallback((token) => dispatch({ type: 'UPDATE_SESSION_TOKEN', token }), [])
   const authToken = new URLSearchParams(location.hash).get('#auth-token')
 
