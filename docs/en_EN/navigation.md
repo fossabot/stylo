@@ -26,7 +26,7 @@
 
 [Documentation]()
 
-  * [First steps](pages/firststeps.md)
+  * [First steps with Stylo](pages/firststeps.md)
   * [Markdown syntax](pages/markdownsyntax.md)
   * [Manage the bibliography](pages/managingref.md)
   * [Preview and annotate an article](pages/preview.md)
