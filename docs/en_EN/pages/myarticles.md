@@ -1,4 +1,4 @@
-# Manage my articles
+# Managing articles
 
 ---
 
