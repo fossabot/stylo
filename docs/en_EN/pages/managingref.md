@@ -1,4 +1,4 @@
-# Managing references
+# Structuring bibliography
 
 Bibliographic references are managed in BibTex format. In the left panel, select **[Bibliography]** then **[Manage Bibliography]**. The *Bibliography* tool opens and offers you several possibilities:
 
