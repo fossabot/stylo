@@ -28,9 +28,9 @@
 
   * [First steps with Stylo](pages/firststeps.md)
   * [Markdown syntax](pages/markdownsyntax.md)
-  * [Manage the bibliography](pages/managingref.md)
+  * [Structuring bibliography](pages/managingref.md)
   * [Preview and annotate an article](pages/preview.md)
-  * [Manage the articles](pages/myarticles.md)
+  * [Managing articles](pages/myarticles.md)
   * [Solving problems](pages/problems.md)
   * [Exports](pages/exports.md)
 
