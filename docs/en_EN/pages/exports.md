@@ -25,7 +25,7 @@ Three templates are available:
 - The École de bibliothéconomie et des sciences de l'information (EBSI) model
 
 ### DLLF model
-template (coming soon)
+Template (coming soon).
 
 ### Lesson Template
 
