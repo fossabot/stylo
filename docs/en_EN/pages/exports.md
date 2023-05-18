@@ -9,7 +9,7 @@ The *legacy* version of the Stylo export (https://stylo-export.ecrituresnumeriqu
      - [Scriptura](https://www.facebook.com/RevueScriptura/)
      - [Nouvelles vues](https://nouvellesvues.org/presentation-de-la-revue/)
 - exports according to the University of Montreal's templates;
-- conversion of a document from DOCX to Markdown format
+- conversion of a document from DOCX to Markdown format.
 
 ## University of Montreal Template Exports 
 
