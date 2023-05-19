@@ -4,7 +4,7 @@
 
 ## Titles
 
-- Level 1 title (the title of the article). This must be completed in the metadata
+- Level 1 title (the title of the article). This must be completed in the metadata.
 - Level 2 titles (titles of each section) are preceded by 2 `#`. For example: `## Introduction`
 - Level 3 titles (subsections) are preceded by 3 `#`. For example: `### Mon titre de sous-section` 
 - And so on (level 4, 4 `#`, etc.). 
@@ -35,7 +35,6 @@ Will give:
 
 Here is my text<sup><a href="syntaxemarkdown.md#note-2" id="#note-2-b">2</a></sup>.
 
-
 ## Italics and bold
 
 - Italics can be created with ```_``` before and after the word or expression in italics. For example:
@@ -57,15 +56,14 @@ Will give:
 
 Here is a **word** in bold.
 
-
 ## Images
 An image can be integrated into a document written in the Markdown markup language according to the following model:
 
-- An exclamation mark `!` ;
-- Followed by square brackets `[]` containing the image description ;
+- An exclamation mark `!`;
+- Followed by square brackets `[]` containing the image description;
 - Then brackets `()` containing the image path or address. 
 
-Here is an image, in this case the logo for W3C (World Wide Web Consortium) :
+Here is an image, in this case the logo for W3C (World Wide Web Consortium):
 
 ![Logo du W3C composé de la lettre W en bleu, du chiffre 3 en bleu et de la lettre C en noir](https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/W3C_icon.svg/212px-W3C_icon.svg.png)
 
@@ -78,6 +76,7 @@ And here is the corresponding markdown:
 **Important**: images must be is PNG format (`.png`), this format is required for the PDF export.
 
 ## Links
+
 The links can be created by distinguishing:
 
 - The link, that is, the word or expression indicated as a link, with square brackets `[]`;
@@ -99,7 +98,7 @@ And here are the corresponding markers:
 
 ```
 > Clicking on a hypertext or hyperlink allows navigation to another place on the page, another page or website that the author judges relevant.
-> Source : [Wikipedia](https://en.wikipedia.org/wiki/Hyperlink)
+> Source: [Wikipedia](https://en.wikipedia.org/wiki/Hyperlink)
 ```
 
 ## Unbreakable space
@@ -205,7 +204,7 @@ John Dewey is born on [20 October 1859]{property="dc:date"content="1859-10-20"}.
 
 ```
 
-Gives in HTML:
+gives in HTML:
 
 ```html
 
@@ -215,7 +214,7 @@ Gives in HTML:
 
 ## Tables
 
-Tables are created as follows
+Tables are created as follows:
 
 - `|` Separates columns
 - A single line break separates the links
@@ -234,7 +233,7 @@ For example, the syntax:
 |Gianna|Bienfaisant|9-10-2005|Florence|Brown|
 ```
 
-Gives:
+gives:
 
 |Surname|First name|Birth date|Birthplace|Eye colour|
 |:------ |:---|:-:|:-:|---:|
@@ -242,5 +241,5 @@ Gives:
 |Dupont|Pierre|7-9-1989|Chicoutimi|Green|
 |Gianna|Bienfaisant|9-10-2005|Florence|Brown|
 
-1. <span id="note-1">A footnote with a number and reference. <a href="syntaxemarkdown.md#note-1-b">â†©</a></span>
-2. <span id="note-2">An inline footnote.<a href="syntaxemarkdown.md#note-2-b">â†©</a></span>
+1. <span id="note-1">A footnote with a number and reference. <a href="syntaxemarkdown.md#note-1-b">↩</a></span>
+2. <span id="note-2">An inline footnote. <a href="syntaxemarkdown.md#note-2-b">↩</a></span>
