@@ -74,7 +74,7 @@ You must then enter the name of the document in the field provided for this purp
 
 and validate the operation by once again clicking on the button
 
-![Valider nouvel article](uploads/images/Create-Validation.png)
+![Valider nouvel article](uploads/images/Create-Validation-V2.png)
 
 During this operation, you can also choose the tags related to the article:
 
