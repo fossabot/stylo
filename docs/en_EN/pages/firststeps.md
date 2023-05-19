@@ -3,13 +3,15 @@
 ---
 
 ## Creating an account
+
 In order to edit in Stylo, creating a user account via Huma-Num is recommended. To create an account, go to Stylo: https://stylo.huma-num.fr and choose the type of account (we recommend that you create a Huma-Num account or log in if you already have one):
 
-![Register](uploads/images/Register.png)
+![Register](uploads/images/Login-Huma-Num-V2.PNG)
 
 If you already have a Stylo or Huma-Num account, log in [here](https://stylo.huma-num.fr).
 
 ## User page
+
 The home page of your Stylo account lists your personal articles as well as those that have been shared with you by other Stylo users.
 
 By default, a first article, called "How to Stylo", appears on the platform, and it details each involved with writing an article. Do not hesitate to refer to it if you wish to write your article directly in Stylo, or if you have questions about articles that require special treatment (illustrations, etc.).
@@ -18,14 +20,14 @@ For each article, many actions are possible:
 
 |Button|Function|
 |:-:|:--|
-| ![Edit](uploads/images/Edit.png) | To open the article and edit|
-| ![Share](uploads/images/Share.png) | To share the article and its version history with another Stylo user. It will be called: "[Copy]New article"|
-| ![Duplicate](uploads/images/Duplicate.png) | To duplicate only the last version of the article|
-| ![Rename](uploads/images/Rename.png) | To rename the article|
-| ![Delete](uploads/images/Delete.png) | To delete the article|
-| ![Plus](uploads/images/plus.png) | To expand other functions relating to the article|
-| ![Versions](uploads/images/Version.png) | To consult the history of saved versions|
-| ![Tag](uploads/images/Tag.png) | To choose the tags of the article|
+| ![Edit](uploads/images/Edit-V2.png) | To open the article and edit|
+| ![Share](uploads/images/Share-V2.png) | To share the article and its version history with another Stylo user. It will be called: "[Copy]New article"|
+| ![Duplicate](uploads/images/Duplicate-V2.png) | To duplicate only the last version of the article|
+| ![Rename](uploads/images/Rename-V2.png) | To rename the article|
+| ![Delete](uploads/images/Delete-V2.png) | To delete the article|
+| ![Plus](uploads/images/Plus-V2.png) | To expand other functions relating to the article|
+| ![Versions](uploads/images/Version-V2.PNG) | To consult the history of saved versions|
+| ![Tags](uploads/images/Tag-V2.png) | To choose the tags of the article|
 
 Note: The document name, as it visible in Stylo, does not correspond to the title of the article that will be generated. The title must be filled in the metadata (right pane on the article) to appear on the preview or the exports.
 
@@ -42,17 +44,17 @@ An article in Stylo is made up of the following three separate elements:
 Stylo offers an integrated interface to edit each of these elements, whose sources are accessible at any time via [the export module](premierspas.md#Export).
 
 ## Editing interface
+
 The article editing interface offers many modules:
 
-  - A body text: a space for editing the body text of the article;
-  - A metadata manager: a space for editing information about the article (summary, author, keywords, publication date, etc.);
-  - A version manager: a space for saving and renaming minor (*Create Minor*) and major (*Create Major*) versions, that accesses successive versions to consult, export and compare them with other versions;
-  - A table of contents: automatically presenting a summary of the article, based on the titles within body text;
-  - A bibliography manager: a space for editing references (quoted or not in the body text);
-  - A statistics tool: presenting statistical information about the article (words and characters count, etc.).
+  - A **body text**: a space for editing the body text of the article;
+  - A **metadata manager**: a space for editing information about the article (summary, author, keywords, publication date, etc.);
+  - A **version manager**: a space for saving and renaming minor (*Create Minor*) and major (*Create Major*) versions, that accesses successive versions to consult, export and compare them with other versions;
+  - A **table of contents**: automatically presenting a summary of the article, based on the titles within body text;
+  - A **bibliography manager**: a space for editing references (quoted or not in the body text);
+  - A **statistics** tool: presenting statistical information about the article (words and characters count, etc.).
 
-![Schéma de l'interface d'édition de Stylo](uploads/images/Structure.png)
-
+![Schéma de l'interface d'édition de Stylo](uploads/images/SchémaInterface.PNG)
 
 ## Share option
 
@@ -64,25 +66,25 @@ The **[Share]** function allows you to invite co-authors to work on the same art
 
 To create a new article, simply click on the button:
 
-![Nouvel article](uploads/images/Create.png)
+![Nouvel article](uploads/images/Create-V2.png)
 
 You must then enter the name of the document in the field provided for this purpose
 
-![nommer un article](uploads/images/Title.png)
+![Nommer un article](uploads/images/Title-V2.PNG)
 
 and validate the operation by once again clicking on the button
 
-![Nouvel article](uploads/images/Create.png)
+![Valider nouvel article](uploads/images/Create-Validation.png)
 
 During this operation, you can also choose the tags related to the article:
 
-![Add Tags](uploads/images/AddTag.png)
+![Add Tags](uploads/images/Tag-Select-V2.PNG)
 
 The article will then appear in your list of articles. 
 
 Click on the button
 
-![edit](uploads/images/Edit.png)
+![Edit](uploads/images/Edit-V2.png)
 
 to access the editing environment and begin to work on your article.
 
@@ -115,7 +117,7 @@ Markdown language allows a syntax structure that is easy to both read and write.
 - Title: the levels of the title (level 1 for the title of the article, level 2 for the titles of the section, etc.) are organised using ```#```, like this: 
 	- ```# Title of the article```, ```## Introduction```, etc.
 
-Careful: The article's body text does not support titles for level 1; titles for level 1 are only used for the *Title* fields in the metadata.
+**Careful**: The article's body text does not support titles for level 1; titles for level 1 are only used for the *Title* fields in the metadata.
 
 - **Italics**: italics can be created in two ways: ```_word_``` or ```*word*``` 
 - **Bold**: bold can be created like this: ```**word**```
@@ -139,24 +141,23 @@ To improve your knowledge in Markdown syntax, you can see this [page](http://sty
 
 ## Versions
 
-![active](uploads/images/NomVersion.png)
+![active](uploads/images/Nom-Version-V2.PNG)
+
 A document version corresponds to a backup of your work. A version always contains the following article elements: metadata, bibliography, body text. Therefore, in loading an old version, each of these three elements are updated.
 
 Your work is automatically saved on Stylo by default, but you must create the versions yourself. To do this, you can - and it is recommended - use the save function [New Version] which allows you to generate a new version of the work:
 
-
+![New-Version](uploads/images/New-Version-V2.PNG)
 
 Thus, when you have created a version that you are satisfied with, you can name your version in the *Version label* field before saving it as a minor ([Create Minor]) or major ([Create Major]) version.
 
+![Label Version](uploads/images/Label-Version-V2.PNG)
+
 A minor release is a release with minor changes, while a major release is a release with significant changes.
 
-At any time, you can view your work, whether it is the current version you are editing or previous versions. Just click on the [Preview] button:
+At any time, you can view your work, whether it is the current version you are editing or previous versions. Just click on the **[preview]** button:
 
-This way, when you have created a version that you are satisfied with, you can make a title of your version in the field *Version label* before saving it as a minor or major version.
-
-At all times, you can view your work. That is, you can view both the current version that you are in the process of working on and the preceding version, by clicking on the **[preview]** button:
-
-![Preview](uploads/images/Preview.png)
+![Preview](uploads/images/Preview-Bouton-V2.PNG)
 
 Each version contains many functions:
 
@@ -164,10 +165,10 @@ Each version contains many functions:
 
 |Button|Function|
 |:-:|:--|
-| ![Save Major](uploads/images/Major.png) | To save a major version of your work |
-| ![Save Minor](uploads/images/Minor.png) | To save a minor version of your work |
-| ![Export](uploads/images/ExportE.png) | To export and save the version in different formats |
-| ![Preview](uploads/images/Preview.png) | To access the preview of your work and annotate it |
+| ![Create Major](uploads/images/Create-Major-V2.PNG) | To save a major version of your work |
+| ![Create Minor](uploads/images/Create-Minor-V2.PNG) | To save a minor version of your work |
+| ![Export](uploads/images/Export-V2.PNG) | To export and save the version in different formats |
+| ![Preview](uploads/images/Preview-Bouton-V2.PNG) | To access the preview of your work and annotate it |
 
 - For a previous version :
 	- **[Compare]** to compare different versions (a previous version and the current version or two previous versions). For more information about the **[Compare]** function, you can consult the following [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/interface.md)
@@ -184,7 +185,7 @@ For more information on Stylo exporting, you can see this [page](http://stylo-do
 
 ## Summary
 
-![sommaire](uploads/images/sommaire.png)
+![Sommaire](uploads/images/Sommaire-V2.PNG)
 
 The summary appears in a list of titles at levels 1, 2, and so on. These titles are clickable, for quick access to that part of the corresponding text.
 
@@ -204,13 +205,15 @@ To add a reference to the article, you just need to click on the reference, then
 
 An autocomplete system also allows you to display the available references by typing [@ or @ followed or not by the first letters of the reference identifier.
 
-![biblioex](uploads/images/biblioex.png)
+![Bibliographie exemple](uploads/images/Bibliographie-Exemple-V2.PNG)
 
 For more information on managing the bibliography, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/bibliographie.md)
 
 ## Metadata
 
-![metadata](uploads/images/metadata.png)
+![Metadata-Bouton](uploads/images/Metadata-Bouton-V2.PNG)
+
+![Metadata-Edition](uploads/images/Metadata-Edition-V2.PNG)
 
 The [Metadata] button opens the metadata pane. Three editing modes are available:
 
@@ -218,7 +221,7 @@ The [Metadata] button opens the metadata pane. Three editing modes are available
 2. **Editor Mode** : allows editing all metadata related to a scholarly journal: article identifier, folder information, review information, journal categories, journal keywords, etc.;
 2. **Raw Mode** : an editing space for an advanced user, where you can modify fields directly in the YAML format structure.
 
-**Important :** In order to export an article, these fields must be filled in:
+**Important**: In order to export an article, these fields must be filled in:
 
 - A title;
 - An author name.
@@ -227,11 +230,11 @@ For more information on metadata editing, you can see this [page](http://stylo-d
 
 **Careful**: In the metadata pane is the "Bibliography" division, including the *Display* option, which allows you to choose to view the bibliography either in its entirety ("All citations"), or just the references which have been cited in the body of the article ("Only used"). 
 
-![All citation](uploads/images/allCitation.png)
+![Bibliography-Display](uploads/images/Bibliography-Display-V2.PNG)
 
 ## Statistics
 
-![statistiques](uploads/images/statistiques.png)
+![Statistiques](uploads/images/Statistiques-V2.PNG)
 
 The *Stats* menu provides information on:
 
@@ -253,4 +256,4 @@ To annotate a version, click on the version number you want to annotate and then
 
 **Important**: If you annotate a version, your annotation will not be visible on the other version.
 
-To annotate the article, click **[Edit]** and then **[Preview]**. The annotations will relate to the article. However, given that the editable version is subject to changes, annotations can no longer be anchored in the correct parts of the text (which could have been deleted or moved).
+To annotate the article, click **[Preview (open a new window)]**. The annotations will relate to the article. However, given that the editable version is subject to changes, annotations can no longer be anchored in the correct parts of the text (which could have been deleted or moved).
