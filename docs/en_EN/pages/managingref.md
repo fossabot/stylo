@@ -16,7 +16,7 @@ The bibliography lists the bibliographic references you have added to your artic
 
 ![Bibliographie-Raw BibTeX](uploads/images/BibliographieRawBibTeX-V2.png)
 
-You can directly [structure your references in BibTex](http://www.andy-roberts.net/writing/latex/bibliographies), or export your references in BibTeX thanks to your bibliography management tool:
+You can directly [structure your references in BibTeX](http://www.andy-roberts.net/writing/latex/bibliographies), or export your references in BibTeX thanks to your bibliography management tool:
 
 - see tutorials : <a class="btn btn-info" href="http://archive.sens-public.org/IMG/pdf/Utiliser_Zotero.pdf" role="button">Zotero</a> <a class="btn btn-info" href="https://libguides.usask.ca/c.php?g=218034&p=1446316" role="button">Mendeley</a>
 
