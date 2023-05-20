@@ -24,10 +24,13 @@ Three templates are available:
 
 <iframe src="http://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/pdf/testPlanCours.pdf" title="testPlanCours" width="100%" height="500" allowfullscreen></iframe>
 
+![Ouvrir dans nouvelle page](uploads/pdf/testPlanCours.pdf)
 
 - The École de bibliothéconomie et des sciences de l'information (EBSI) model
 
-<iframe src="http://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/pdf/test.pdf" title="testEBSI" width="100%" height="500" allowfullscreen></iframe>
+<iframe src="http://stylo-doc.ecrituresnumeriques.ca/fr_FR/pages/uploads/pdf/test.pdf" title="testEBSI" width="100%" height="500" allowfullscreen></iframe> 
+
+![Ouvrir dans nouvelle page](uploads/pdf/test.pdf)
 
 ### DLLF model
 Template (coming soon).
