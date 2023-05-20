@@ -85,8 +85,7 @@ Each article appears as a block in your list. This space is designed for just on
 |:-:|:--|
 | ![Rename](uploads/images/Rename-V2.png) | To rename the article|
 | ![See](uploads/images/Preview-V2.png) |  To preview the article|
-| ![Share](uploads/images/Share-V2.png) | To share the article and its version history with
-another Stylo user|
+| ![Share](uploads/images/Share-V2.png) | To share the article and its version history with another Stylo user|
 | ![Duplicate](uploads/images/Duplicate-V2.png) | To duplicate only the last version of the article. The copy will be titled as follows: "[Copy] Article Title"|
 | ![Export](uploads/images/Download.png) | To export the article|
 | ![Edit](uploads/images/Edit-V2.png) | To open the article in editing mode|
