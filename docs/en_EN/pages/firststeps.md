@@ -104,7 +104,7 @@ The editing environment is made up of 5 modules:
 - To the right: the **[Metadata]** button opens the metadata editor;
 - To the left:
   - The history of document versions (*Versions*) to navigate and interact with different saved versions;
-  - The *Table of contents* lists the titles at 2^nd^, 3^rd^, 4^th^, etc. levels;
+  - The *Table of contents* lists the titles at 2<sup>nd</sup>, 3^rd^, 4^th^, etc. levels;
   - The *Bibliography* lists the bibliographic references;
   - The *Stats* offer some quantitative data on the article.
 
