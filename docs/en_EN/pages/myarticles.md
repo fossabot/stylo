@@ -139,58 +139,58 @@ The [Send a Copy] option is not an article sharing: only the latest version of t
 
 You can duplicate your article by clicking on the following icon:
 
-![Duplicate](uploads/images/Duplicate.png)
+![Duplicate](uploads/images/Duplicate-V2.png)
 
 A duplicate of the article will then be generated and will appear at the top of the list of your Stylo articles. This article will be automatically titled as follows: "[Copy] Article title". This duplicate is created from the current article version (the one that you are in the process of editing) and does not contain the version history.
 
 ## Export an article
 
-To export an article, you must click on the "Export" button, then the page "My articles", or from the article editing page:
+To export an article, click on the "Export" button from the "Articles" page or from the article's edit page:
 
 ![Export](uploads/images/Export.png)
 
 The export menu allows you to choose the export format, the bibliographical style and whether or not to integrate the contents table.
 
-![Export](uploads/images/export2.png)
+![Export](uploads/images/ExportConfig-V2.PNG)
 
 Supported formats are:
 
+- Original files (Markdown, Yaml and BibTeX)
 - HTML5
+- LaTex
 - PDF
-- ODT
-- Tex
-- DOCX
-- EPUB
-- TEI
-- ICML
-- XML Érudit
-- ZIP (with the source files: markdown, yaml and BibTex)
+- ODT (LibreOffice)
+- DOCX (Microsoft Word)
+- ICML (InDesign)
+- XML-TEI
+- XML-Erudit
+- XML-TEI Commons Publishing (Metopes and OpenEdition)
 
-It is possible to choose from several bibliographic styles, some of which integrate the reference into the text (Chicago, for example, which uses brackets to insert the reference into the text body) and others, who add a note with the reference.
+It is possible to choose from several bibliographic styles, some of which integrate the reference into the text (Chicago, for example, which uses brackets to insert the reference into the body text) and others, who add a note with the reference.
 
-The export module manages the reference formatting, adding or removing spaces, and inserting "ibid" according to the style, etc.
+The export module takes care of formatting the references, adding or removing spaces, inserting "Ibid." according to the style, etc.
 
 Exports are produced thanks to the [pandoc](https://pandoc.org/) conversion tool, based on templates available here.
 
-The export also downloads the Stylo source files -- and the media inserted in the article, if this is the case.
+The export also allows you to download the source files of Stylo (.md, .bib, .yaml) and the media inserted in the article if there are any.
 
 ### Personalise the export
 
-From the source files, it is possible to produce personalised exports -- layout, graphics, metadata -- by using the [pandoc](https://pandoc.org/) conversion tool.
+From the source files, it is possible to produce customized exports (layout, graphics, metadata) by using the [pandoc](https://pandoc.org/) conversion tool.
 
-For more information on using the templates, see this [tutoriel](https://framagit.org/marviro/tutorielmdpandoc/blob/master/parcours/04_edition.md#les-templates-dans-pandoc).
+For more information on the use of templates, see this [tutoriel](https://framagit.org/marviro/tutorielmdpandoc/blob/master/parcours/04_edition.md#les-templates-dans-pandoc).
 
 ## Expand other article functions
 
 To expand other article functions, you must click on the rafter, positioned to the left of the title of your article:
 
-![Plus](uploads/images/plus.png)
+![Plus](uploads/images/ChevronArticle-V2.PNG)
 
 ### Access versions of the article
 
-You then have access to the major and minor versions of the articles: clicking on the name of a version takes you to the page in \"Editing\" mode of the respective version.
+You then have access to the major and minor versions of the articles: clicking on the name of a version takes you to the page in \"Editing\" mode of the version in question.
 
-![Versions](uploads/images/Version.png)
+![Versions](uploads/images/AccesVersion-V2.PNG)
 
 **Careful**: the page version to which you have access, although it is in \"Editing\" mode, does not allow you to change the content of the article. This is just a reading mode page from which you can [export]() and [compare]().
 
@@ -198,20 +198,20 @@ You then have access to the major and minor versions of the articles: clicking o
 
 You can also assign tags to your article from the list of current tags, simply by clicking on the tag you wish to add.
 
-![TagEdit](uploads/images/TagE.png)
+![TagEdit](uploads/images/SelectTag-V2.PNG)
 
 **Careful**: to create tags, you must refer to the [Manage tags] tool.
 
-![BarreLaterale2](uploads/images/BarreLaterale2.png)
+![BarreLaterale2](uploads/images/CreateNewTag-V2.PNG)
 
 ### Delete an article
 
 To delete an article in your list of articles, click on the following icon:
 
-![Delete](uploads/images/Delete.png)
+![Delete](uploads/images/Delete-V2.png)
 
 A red tab will automatically open, informing you that your file will be deleted:
 
-![Delete2](uploads/images/Delete2.png)
+![Delete2](uploads/images/DeleteRouge-V2.PNG)
 
 To permanently delete your article, you must double click on "Delete".
