@@ -207,7 +207,7 @@ An autocomplete system also allows you to display the available references by ty
 
 ![Bibliographie exemple](uploads/images/Bibliographie-Exemple-V2.PNG)
 
-For more information on managing the bibliography, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/bibliographie.md)
+For more information on managing the bibliography, you can see this [page](http://stylo-doc.ecrituresnumeriques.ca/fr_FR/#!pages/bibliographie.md).
 
 ## Metadata
 
