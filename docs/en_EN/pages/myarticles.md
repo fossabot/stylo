@@ -88,7 +88,7 @@ Each article appears as a block in your list. This space is designed for just on
 | ![Share](uploads/images/Share-V2.png) | To share the article and its version history with
 another Stylo user|
 | ![Duplicate](uploads/images/Duplicate-V2.png) | To duplicate only the last version of the article. The copy will be titled as follows: "[Copy] Article Title"|
-| ![Export](uploads/images/Export.png) | To export the article|
+| ![Export](uploads/images/Download.png) | To export the article|
 | ![Edit](uploads/images/Edit-V2.png) | To open the article in editing mode|
 | ![Delete](uploads/images/Delete-V2.png) | To delete the article.|
 
@@ -147,7 +147,7 @@ A duplicate of the article will then be generated and will appear at the top of 
 
 To export an article, click on the "Export" button from the "Articles" page or from the article's edit page:
 
-![Export](uploads/images/Export.png)
+![Export](uploads/images/Download.png)
 
 The export menu allows you to choose the export format, the bibliographical style and whether or not to integrate the contents table.
 
