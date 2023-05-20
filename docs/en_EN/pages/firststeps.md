@@ -203,7 +203,7 @@ You can directly [structure your references in BibTex](http://www.andy-roberts.n
 
 To add a reference to the article, you just need to click on the reference, then paste (Ctrl+V) the reference in the desired place of the text. This way, a click is the same as "copying" the reference key to the clipboard. Then, you just need to paste it into the body text.
 
-An autocomplete system also allows you to display the available references by typing [@ or @ followed or not by the first letters of the reference identifier.
+An autocomplete system also allows you to display the available references by typing `[@` or `@` followed or not by the first letters of the reference identifier.
 
 ![Bibliographie exemple](uploads/images/Bibliographie-Exemple-V2.PNG)
 
