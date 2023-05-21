@@ -1,43 +1,45 @@
 # Dissertations and theses
-Stylo permet de créer des documents plus complexes que de simples articles, tels que des mémoires ou des thèses ; cette fonctionnalité s'appelle **Books**.
 
-**Attention : cette option n'est pas totalement fonctionnelle, nous vous recommandons de patienter jusqu'aux prochaines mises à jour avant de l'utiliser comme rendu final.**
+---
+Stylo allows you to create more complex documents than just articles, such as dissertations or theses; this feature is called **Books**.
 
-## Principes de base
+**Careful: this option is not fully functional. We recommend that you wait for future updates before using it as a final rendering.**
 
-> Un mémoire est constitué d'un ou plusieurs documents Stylo mis bout à bout.
+## Basic principles
 
-- Ces documents peuvent être les chapitres ou les parties du mémoire.
-- Ils sont rassemblés dans un mémoire à l'aide d'un même label _[tag]_, qui doit être associé à chaque document Stylo.
-- Chaque chapitre ou partie fonctionne donc comme un document Stylo :
-  - il possède ses propres métadonnées et sa propre bibliographie.
-  - il peut être partagé en tant que tel (annotation, preview, etc.). C'est au moment de l'export du mémoire que les différentes parties sont éditées ensemble.
-- Les métadonnées du mémoire complet sont celles du premier document.
+> A thesis consists of one or more Stylo documents put together.
 
-**Les documents à l'intérieur d'un mémoire sont classés par ordre alphabétique, la solution la plus simple pour maîtriser l'ordre est de placer un numéro au début du nom de chaque document concerné (le nom du document ne doit pas être confondu avec le titre du document renseigné dans les métadonnées).**
+- These documents may be chapters or parts of the thesis.
+- They are collected in a thesis using the same _[tag]_ label, which must be associated with each Stylo document.
+- Each chapter or part therefore functions as a Stylo document:
+  - It has its own metadata and bibliography.
+  - It can be shared as such (annotation, preview, etc.). It is at the time of exporting the thesis that the different parts are edited together.
+- The metadata of the complete thesis is that of the first document.
 
-## Quelques particularités
+**Documents within a thesis are listed in alphabetical order. The easiest way to control the order is to place a number at the beginning of the name of each document concerned (the name of the document must not be confused with the title of the document entered in the metadata).**
 
-### Niveaux de titre
+## Some particularities
 
-Votre mémoire ou thèse peut être structuré en parties et chapitres ou en chapitres seuls. Les titres de **partie** doivent être des **titres de niveau 1** (exemple: `# Première Partie : mon titre de partie`) et les titres de **chapitre** seront alors des **titres de niveau 2**. Dans le cas d'un mémoire structuré en chapitres seuls, les titres de **chapitre** seront des **titres de niveau 1** (exemple: `# mon titre de chapitre`)
+### Title levels
 
-Au moment de l'export, vous pourrez déclarer l'organisation de votre mémoire :
+Your dissertation or thesis can be structured into parts and chapters or chapters only. **Part titles** must be **level 1 titles** (example: `# Part 1: my part title`) and **chapter titles** will then be **level 2 titles**. In the case of a dissertation structured in chapters only, the **chapter titles** will be **level 1 titles** (example: `# My chapter title`).
 
-1. **En parties et chapitres**
-2. **En chapitres seuls**
+At the time of export, you will be able to declare the organization of your thesis:
 
+1. **In parts and chapters**
+2. **In chapters only**.
 
-### Bibliographie
-Par défaut la bibliographie générée est celle de l'ensemble des références citées ou présentes dans les différents articles qui composent le mémoire.
+### Bibliography
 
-Mais il est également possible de structurer cette bibliographie : dans un mémoire ou une thèse, la bibliographie est souvent divisée en différentes sections. Stylo permet de créer une bibliographie organisée en sous-sections. Voici les deux étapes à suivre :
+By default, the bibliography generated is that of all the references cited or present in the various articles that make up the thesis.
 
-1. Dans les métadonnées du mémoire, il faut déclarer les différentes sections de la bibliographie. Pour cela, passez les métadonnées en mode _raw_
+But it is also possible to structure this bibliography: in a dissertation or a thesis, the bibliography is often divided into different sections. Stylo allows you to create a bibliography organized in sub-sections. Here are the two steps to follow:
+
+1. In the metadata of the dissertation, you must declare the different sections of the bibliography. To do this, switch the metadata to _raw_ mode;
 
 ![rawmode](uploads/images/alpha_rawmode.png)
 
-Puis à la fin, avant `---`, ajoutez les lignes suivantes :
+Then at the end, before `---`, add the following lines:
 
 ```yaml
 subbiblio:
@@ -47,32 +49,35 @@ subbiblio:
     title: Théorie
 ```
 
-La structure est la suivante :
-- `key` est la "clé de section", autrement dit un tag qui sera utilisé à l'étape suivante.
-- `title` sera votre titre de section de bibliographie, tel qu'il sera affiché dans le mémoire.
+The structure is as follows:
+- `key` is the "section key", in other words a tag that will be used in the next step.
+- `title` will be your bibliography section title, as it will be displayed in the thesis.
 
-2. Pour chacune des références bibliographiques concernées, ajoutez dans le champ `keywords` la clé de section (par exemple `pratique` ou `théorie`). Cette étape peut être faite soit dans Zotero, soit dans Stylo en éditant le BibTeX directement.
+2. For each of the bibliographic references concerned, add in the `keywords` field the section key (for example `practice` or `theory`). This step can be done either in Zotero or in Stylo by editing the BibTeX directly.
 
-### Métadonnées du mémoire
-_Dans une prochaine version, l'interface "Books" proposera un éditeur de métadonnées pour les métadonnées du mémoire ou de la thèse._
+### Thesis metadata
 
-Dans cette version de Stylo les métadonnées du mémoire seront celles du premier document déclaré. Les autres métadonnées seront ignorées. **Les sous-divisions de la bibliographie** doivent donc être déclarées dans le premier document du mémoire.
+_In a future version, the "Books" interface will offer a metadata editor for dissertation or thesis metadata._
+
+In this version of Stylo, the metadata of the thesis will be those of the first declared document. Other metadata will be ignored. **The subdivisions of the bibliography** must therefore be declared in the first document of the thesis.
 
 ### Export
-L'export du mémoire se fait à travers un template LaTeX dédié. Il correspond au template de mémoire et de thèse de l'Université de Montréal.
 
-D'autres templates (modèles) seront disponibles prochainement.
+The export of the thesis is done through a dedicated LaTeX template. It corresponds to the thesis template of the University of Montreal.
+
+More templates will be available soon.
 
 <!-- à quoi correspond cette image ? en commentaire pour le moment -->
 <!-- ![exportbook](uploads/images/alpha_exportbook.png) -->
 
-Plusieurs options sont disponibles :
+Several options are available:
 
-1. Format du document exporté
-2. Style bibliographique
-3. Table des matières
-4. Numérotation (ou non) des sections et chapitres
-5. Structure du mémoire : en parties et chapitres, ou en chapitres seuls
+1. Format of the exported document;
+2. Bibliographic style;
+3. Table of contents;
+4. Numbering (or not) of sections and chapters;
+5. Structure of the thesis: in parts and chapters, or in chapters alone.
 
-### Personnaliser l'export en pdf
-Il est possible d'insérer du code LaTeX dans les contenus Markdown (hors métadonnées).
+### Customize the export to pdf
+
+It is possible to insert LaTeX code in Markdown content (excluding metadata).
