@@ -50,7 +50,7 @@ subbiblio:
 ```
 
 The structure is as follows:
-- `key` is the "section key", in other words a tag that will be used in the next step.
+- `key` is the "section key", in other words a tag that will be used in the next step;
 - `title` will be your bibliography section title, as it will be displayed in the thesis.
 
 2. For each of the bibliographic references concerned, add in the `keywords` field the section key (for example `practice` or `theory`). This step can be done either in Zotero or in Stylo by editing the BibTeX directly.
