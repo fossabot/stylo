@@ -26,7 +26,7 @@ Your dissertation or thesis can be structured into parts and chapters or chapter
 
 At the time of export, you will be able to declare the organization of your thesis:
 
-1. **In parts and chapters**
+1. **In parts and chapters**;
 2. **In chapters only**.
 
 ### Bibliography
