@@ -37,7 +37,7 @@ But it is also possible to structure this bibliography: in a dissertation or a t
 
 1. In the metadata of the dissertation, you must declare the different sections of the bibliography. To do this, switch the metadata to _raw_ mode;
 
-![rawmode](uploads/images/alpha_rawmode.png)
+![rawmode](uploads/images/RawMode-V2.PNG)
 
 Then at the end, before `---`, add the following lines:
 
