@@ -135,7 +135,7 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
     if (contributorsError) {
       setToast({
         type: 'error',
-        text: `Unable to load contributors: ${contributorsError.toString()}`
+        text: {t('article.contributor.error')} ${contributorsError.toString()}
       })
     }
   }, [contributorsError])
@@ -186,12 +186,12 @@ export default function Article ({ article, corpus, onArticleUpdated, onArticleD
       onArticleDeleted(article)
       setToast({
         type: 'default',
-        text: `Article successfully deleted`
+        text: {t('article.deletion.successful')}
       })
     } catch (err) {
       setToast({
         type: 'error',
-        text: `Unable to delete article: ${err.message}`
+        text: {t('article.deletion.unsuccessful')} ${err.message}
       })
     }
   }
